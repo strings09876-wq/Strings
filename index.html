@@ -1,101 +1,305 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>Mini Facebook UI</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>STRINGS — Home</title>
+  <style>
+    /* Simple reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    :root{
+      --blue: #1877f2;
+      --bg: #f0f2f5;
+      --card: #fff;
+      --muted: #65676b;
+      --rounded: 12px;
+      --max-width: 1150px;
+    }
+    body{ background: var(--bg); color:#111; display:flex; justify-content:center; padding:18px 12px; }
+    .container{ width:100%; max-width:var(--max-width); display:grid; grid-template-columns: 240px 1fr 300px; gap:18px; }
 
-<!-- External CSS -->
-<link rel="stylesheet" href="style.css">
+    /* Top bar (fixed at top of page content area) */
+    .topbar{ grid-column:1/-1; position:sticky; top:0; z-index:50; backdrop-filter: blur(4px); padding:10px 14px; background: rgba(255,255,255,0.75); border-radius:10px; display:flex; align-items:center; gap:12px; box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+    .logo{ display:flex; align-items:center; gap:8px; font-weight:700; color:var(--blue); }
+    .logo .mark{ width:38px; height:38px; background:linear-gradient(135deg,#4da3ff,#0056d6); color:#fff; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:800; font-size:16px; }
+    .search{ flex:1; display:flex; align-items:center; gap:8px; }
+    .search input{ width:100%; padding:10px 12px; border-radius:20px; border:1px solid #e6e6e6; outline:none; background:#fff; }
+    .top-icons{ display:flex; gap:8px; align-items:center; }
 
+    /* Left nav */
+    .left{ }
+    .card{ background:var(--card); border-radius:var(--rounded); padding:14px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
+    .profile{ display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+    .avatar{ width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#ffd27a,#ff8a00); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
+    .left .menu a{ display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; color:#111; text-decoration:none; margin-bottom:6px; }
+    .left .menu a small{ color:var(--muted); display:block; font-size:12px; }
+
+    /* Center feed */
+    .center{ display:flex; flex-direction:column; gap:14px; }
+    .stories{ display:flex; gap:10px; overflow:auto; padding:10px; }
+    .story{ min-width:120px; height:180px; border-radius:12px; background:linear-gradient(180deg,#fff,#f6f8fb); display:flex; flex-direction:column; justify-content:flex-end; padding:10px; box-shadow: 0 6px 14px rgba(16,24,40,0.04); position:relative; }
+    .story .who{ font-weight:600; font-size:14px; }
+    .story .pic{ position:absolute; top:10px; left:10px; width:44px; height:44px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+
+    .people-suggest{ display:flex; gap:10px; overflow:auto; padding:10px; }
+    .suggest{ min-width:150px; background:var(--card); border-radius:12px; padding:10px; text-align:center; box-shadow: 0 6px 16px rgba(16,24,40,0.04); }
+    .post{ background:var(--card); border-radius:var(--rounded); padding:12px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
+    .post textarea{ width:100%; border-radius:10px; padding:12px; border:1px solid #e7e7e7; resize:vertical; min-height:70px; }
+
+    .post-actions{ display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .btn{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; background:var(--blue); color:#fff; }
+
+    .feed-card{ background:var(--card); border-radius:12px; padding:12px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
+    .feed-header{ display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+    .feed-media{ width:100%; border-radius:10px; max-height:600px; object-fit:cover; display:block; }
+
+    .actions{ display:flex; gap:14px; margin-top:8px; color:var(--muted); font-size:14px; }
+
+    /* Right column */
+    .right{ display:flex; flex-direction:column; gap:12px; }
+    .contacts{ display:flex; flex-direction:column; gap:8px; max-height:600px; overflow:auto; padding:10px; }
+    .contact{ display:flex; gap:10px; align-items:center; padding:6px 8px; border-radius:8px; text-decoration:none; color:inherit; }
+    .contact img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
+
+    /* Responsive */
+    @media (max-width:1050px){
+      .container{ grid-template-columns: 1fr; }
+      .right{ order:3 }
+      .left{ order:2 }
+    }
+    /* small helpers */
+    .muted{ color:var(--muted); font-size:13px; }
+    .small{ font-size:13px; }
+    .spacer{ flex:1; }
+  </style>
 </head>
 <body>
-<div class="app" role="application" aria-label="Mini Facebook UI">
-
-  <!-- Topbar -->
-  <header class="topbar" role="banner">
-    <div class="logo" aria-hidden="true">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect width="24" height="24" rx="6" fill="#fff" />
-        <path d="M13.2 12.65v6h-2.5v-6H8.5V9.6h2.2V7.98c0-1.6.98-3.98 3.97-3.98l1.07.01v2.76h-0.78c-0.61 0-0.73 0.29-0.73 0.72v1.52h1.51l-0.2 3.05h-1.31z" fill="#1877f2"/>
-      </svg>
-      <span style="color:white;">facebook</span>
-    </div>
-
-    <div class="top-actions" role="navigation" aria-label="top actions">
-      <button title="Add" aria-label="Add" style="background:transparent;border:0;color:white;cursor:pointer">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-      <button title="Search" aria-label="Search" style="background:transparent;border:0;color:white;cursor:pointer">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="1.8" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="white" stroke-width="1.8"/></svg>
-      </button>
-      <button id="menuBtn" title="Menu" aria-label="Menu" style="background:transparent;border:0;color:white;cursor:pointer;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- content -->
-  <main class="container" role="main">
-    <!-- composer -->
-    <div class="composer" aria-label="Create post">
-      <div class="avatar" aria-hidden="true">
-        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=60" alt="profile">
+  <div class="container">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="logo">
+        <div class="mark">S</div>
+        <div>
+          <div style="font-size:14px;">STRINGS</div>
+          <div class="muted" style="font-size:12px;">Social • Connect</div>
+        </div>
       </div>
-      <input id="postInput" placeholder="What's on your mind?" aria-label="What's on your mind?" />
+
+      <div class="search" style="max-width:620px;">
+        <input id="search" placeholder="Search STRINGS" aria-label="Search" />
+      </div>
+
+      <div class="top-icons">
+        <button title="Home" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">🏠</button>
+        <button title="Watch" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">▶️</button>
+        <button title="Marketplace" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">🛒</button>
+        <div style="width:8px;"></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f6a5ff,#ff6e8a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">P</div>
+        </div>
+      </div>
     </div>
 
-    <!-- stories -->
-    <div class="stories" id="stories" aria-label="Stories carousel">
-      <div class="story create" role="button" title="Create story" aria-label="Create story">+</div>
-    </div>
-
-    <!-- feed -->
-    <div id="feed">
-      <article class="card" id="samplePost" aria-label="Post by 5-Minute Crafts">
-        <div class="post-header">
-          <div class="avatar" style="width:48px;height:48px;">
-            <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=500&q=60" alt="page avatar">
-          </div>
+    <!-- Left column -->
+    <div class="left">
+      <div class="card">
+        <div class="profile">
+          <div class="avatar">P</div>
           <div>
-            <div style="font-weight:700;">5-Minute Crafts <span class="small"> · 4h</span></div>
-            <div class="muted">Public</div>
-          </div>
-          <div style="margin-left:auto;">
-            <button title="Close" style="border:0;background:transparent;cursor:pointer;font-size:18px;">⋯</button>
+            <div style="font-weight:700;">Pawan Tiwari</div>
+            <div class="muted">View profile</div>
           </div>
         </div>
-
-        <div class="post-text">Juiciest patty in 3...2...1</div>
-
-        <div class="post-media" style="margin:6px 0;">
-          <img src="https://images.unsplash.com/photo-1604908177522-8e6c0f6f4c3b?w=1200&q=60" alt="post image">
+        <div class="menu">
+          <a href="#"><div>📰</div><div><strong>Feed</strong><small class="muted">Latest posts</small></div></a>
+          <a href="#"><div>📸</div><div><strong>Stories</strong><small class="muted">Share a moment</small></div></a>
+          <a href="#"><div>👥</div><div><strong>Friends</strong><small class="muted">Find people</small></div></a>
+          <a href="#"><div>📅</div><div><strong>Events</strong><small class="muted">Nearby</small></div></a>
         </div>
-
-        <div class="post-actions">
-          <div class="actions-left">
-            <button class="btn like" id="likeBtn" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.1 21s-7.6-4.9-9.6-8.3C-0.1 8.6 3 4 7 4c2.6 0 3.9 1.8 5 3 1.1-1.2 2.4-3 5-3 4 0 7.1 4.6 4.5 8.7-2 3.3-9.5 8.6-9.5 8.6z" stroke="currentColor" stroke-width="0.6" fill="currentColor"></path></svg>
-              <span class="small">Like</span>
-            </button>
-            <button class="btn" aria-label="Comment">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="0.7" fill="none"/></svg>
-              <span class="small">Comment</span>
-            </button>
-            <button class="btn" aria-label="Share">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12v7a1 1 0 0 0 1 1h14" stroke="currentColor" stroke-width="0.7" fill="none"/><path d="M16 6l4 4-4 4" stroke="currentColor" stroke-width="0.7" fill="none"/><path d="M20 10H7" stroke="currentColor" stroke-width="0.7"/></svg>
-              <span class="small">Share</span>
-            </button>
-          </div>
-          <div class="small muted" id="likesCount">12</div>
-        </div>
-      </article>
+      </div>
     </div>
-  </main>
-</div>
 
-<!-- External JS -->
-<script src="script.js"></script>
+    <!-- Center feed -->
+    <main class="center">
+      <!-- stories -->
+      <div class="stories card" id="stories">
+        <div class="story">
+          <div class="pic">P</div>
+          <div class="who">Create story</div>
+        </div>
+        <div class="story" style="background:linear-gradient(180deg,#fde8d6,#fff);">
+          <div class="pic">N</div>
+          <div class="who">Neeraj Mishra</div>
+        </div>
+        <div class="story" style="background:linear-gradient(180deg,#dff3ff,#fff);">
+          <div class="pic">A</div>
+          <div class="who">Aman Tiwari</div>
+        </div>
+        <div class="story" style="background:linear-gradient(180deg,#f7eafc,#fff);">
+          <div class="pic">M</div>
+          <div class="who">Mukesh Mishra</div>
+        </div>
+        <div class="story" style="background:linear-gradient(180deg,#e8ffe8,#fff);">
+          <div class="pic">J</div>
+          <div class="who">Janki Chaudhary</div>
+        </div>
+      </div>
 
+      <!-- People you may know -->
+      <div class="card people-suggest" id="people">
+        <div class="suggest">
+          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#4da3ff,#0056d6); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">PU</div>
+          <div style="margin-top:8px; font-weight:700;">Pawan Upadhyay</div>
+          <div class="muted small">22 mutual friends</div>
+          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
+        </div>
+
+        <div class="suggest">
+          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#ffd27a,#ff8a00); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">AM</div>
+          <div style="margin-top:8px; font-weight:700;">Ayush Maurya</div>
+          <div class="muted small">6 mutual friends</div>
+          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
+        </div>
+
+        <div class="suggest">
+          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#b4ffd6,#39b385); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">AR</div>
+          <div style="margin-top:8px; font-weight:700;">Ayush Redkar</div>
+          <div class="muted small">3 mutual friends</div>
+          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
+        </div>
+      </div>
+
+      <!-- create post -->
+      <div class="post card">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+          <div class="avatar" style="width:44px;height:44px">P</div>
+          <div style="flex:1;">
+            <div style="font-weight:700;">What's on your mind, Pawan?</div>
+            <div class="muted small">Share a memory, thought or update</div>
+          </div>
+        </div>
+        <textarea placeholder="Write something to your friends..." id="postText"></textarea>
+        <div class="post-actions">
+          <button class="btn" onclick="createPost()">Post</button>
+          <div class="spacer"></div>
+          <button style="background:#f0f2f5;border-radius:8px;border:0;padding:8px 10px;cursor:pointer;">📎 Photo</button>
+          <button style="background:#f0f2f5;border-radius:8px;border:0;padding:8px 10px;cursor:pointer;">😊 Feeling</button>
+        </div>
+      </div>
+
+      <!-- feed post -->
+      <div class="feed-card" id="feed">
+        <div class="feed-header">
+          <div class="avatar" style="width:52px;height:52px">J</div>
+          <div>
+            <div style="font-weight:700;">Jayesh Dubey <span class="muted small">• 30 Nov</span></div>
+            <div class="muted small">Updated profile picture</div>
+          </div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=60" alt="post" class="feed-media" />
+        <div class="actions">
+          <div id="likeBtn" style="cursor:pointer;" onclick="toggleLike(this)">👍 Like</div>
+          <div style="cursor:pointer">💬 Comment</div>
+          <div style="cursor:pointer">↗️ Share</div>
+        </div>
+      </div>
+
+      <!-- sponsored / ad -->
+      <div class="card" style="padding:14px;">
+        <div style="font-weight:700; margin-bottom:6px;">Sponsored</div>
+        <div style="background:#f8f9fb;border-radius:10px;padding:10px;">
+          <div style="font-size:18px;font-weight:700;">Your best content deserves more views.</div>
+          <div class="muted small" style="margin-top:6px;">Get help promoting your videos and reach new viewers.</div>
+          <button style="margin-top:10px;" class="btn">Sign up</button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Right column -->
+    <aside class="right">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-weight:700;">Contacts</div>
+          <div class="muted">•</div>
+        </div>
+        <div class="contacts" id="contacts">
+          <a class="contact" href="#"><img src="https://picsum.photos/seed/a/200" alt="" /><div>Meta AI <div class="muted small">Active</div></div></a>
+          <a class="contact" href="#"><img src="https://picsum.photos/seed/b/200" alt="" /><div>Jatin Dave<div class="muted small">Active</div></div></a>
+          <a class="contact" href="#"><img src="https://picsum.photos/seed/c/200" alt="" /><div>Shailesh<div class="muted small">Active</div></div></a>
+          <a class="contact" href="#"><img src="https://picsum.photos/seed/d/200" alt="" /><div>Manas Bhakat<div class="muted small">Active</div></div></a>
+          <a class="contact" href="#"><img src="https://picsum.photos/seed/e/200" alt="" /><div>Aman Tiwari<div class="muted small">Active</div></div></a>
+        </div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <div style="font-weight:700; margin-bottom:8px;">Group chats</div>
+        <div class="muted small">Create or join groups to chat with friends.</div>
+        <button class="btn" style="margin-top:10px;">Create group chat</button>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Simple interactions
+    function addFriend(btn){
+      btn.textContent = 'Requested';
+      btn.disabled = true;
+      btn.style.background = '#4CAF50';
+    }
+
+    function toggleLike(el){
+      if(el.dataset.liked === '1'){
+        el.innerHTML = '👍 Like';
+        el.dataset.liked = '0';
+      } else {
+        el.innerHTML = '💙 Liked';
+        el.dataset.liked = '1';
+      }
+    }
+
+    function createPost(){
+      const text = document.getElementById('postText').value.trim();
+      if(!text){
+        alert('Write something before posting.');
+        return;
+      }
+      const feed = document.getElementById('feed');
+      const post = document.createElement('div');
+      post.className = 'feed-card';
+      post.innerHTML = `
+        <div class="feed-header">
+          <div class="avatar" style="width:52px;height:52px">P</div>
+          <div>
+            <div style="font-weight:700;">You <span class="muted small">• Just now</span></div>
+          </div>
+        </div>
+        <div style="margin-top:8px;">${escapeHtml(text)}</div>
+        <div class="actions">
+          <div style="cursor:pointer" onclick="toggleLike(this)">👍 Like</div>
+          <div style="cursor:pointer">💬 Comment</div>
+          <div style="cursor:pointer">↗️ Share</div>
+        </div>
+      `;
+      // insert new post at top of feed area
+      const main = document.querySelector('.center');
+      main.insertBefore(post, main.querySelector('.post').nextSibling);
+      document.getElementById('postText').value = '';
+    }
+
+    // small helper to avoid HTML injection
+    function escapeHtml(str){
+      return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+    }
+
+    // make horizontal strips scroll smoothly with mouse wheel
+    document.querySelectorAll('.stories, .people-suggest').forEach(el=>{
+      el.addEventListener('wheel', e=>{
+        if (e.deltaY === 0) return;
+        e.preventDefault();
+        el.scrollLeft += e.deltaY;
+      }, { passive:false });
+    });
+  </script>
 </body>
 </html>
