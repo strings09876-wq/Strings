@@ -3,303 +3,362 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>STRINGS — Home</title>
+  <title>STRINGS (FROM ROYAL ENTERPRISE) — Home</title>
   <style>
-    /* Simple reset */
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    /* --- Reset & base --- */
     :root{
       --blue: #1877f2;
       --bg: #f0f2f5;
       --card: #fff;
       --muted: #65676b;
-      --rounded: 12px;
-      --max-width: 1150px;
+      --radius: 12px;
+      --shadow: 0 2px 8px rgba(20,20,20,0.06);
+      --text: #050505;
+      --glass: rgba(255,255,255,0.7);
     }
-    body{ background: var(--bg); color:#111; display:flex; justify-content:center; padding:18px 12px; }
-    .container{ width:100%; max-width:var(--max-width); display:grid; grid-template-columns: 240px 1fr 300px; gap:18px; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
 
-    /* Top bar (fixed at top of page content area) */
-    .topbar{ grid-column:1/-1; position:sticky; top:0; z-index:50; backdrop-filter: blur(4px); padding:10px 14px; background: rgba(255,255,255,0.75); border-radius:10px; display:flex; align-items:center; gap:12px; box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
-    .logo{ display:flex; align-items:center; gap:8px; font-weight:700; color:var(--blue); }
-    .logo .mark{ width:38px; height:38px; background:linear-gradient(135deg,#4da3ff,#0056d6); color:#fff; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:800; font-size:16px; }
-    .search{ flex:1; display:flex; align-items:center; gap:8px; }
-    .search input{ width:100%; padding:10px 12px; border-radius:20px; border:1px solid #e6e6e6; outline:none; background:#fff; }
-    .top-icons{ display:flex; gap:8px; align-items:center; }
-
-    /* Left nav */
-    .left{ }
-    .card{ background:var(--card); border-radius:var(--rounded); padding:14px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
-    .profile{ display:flex; gap:12px; align-items:center; margin-bottom:12px; }
-    .avatar{ width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#ffd27a,#ff8a00); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
-    .left .menu a{ display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; color:#111; text-decoration:none; margin-bottom:6px; }
-    .left .menu a small{ color:var(--muted); display:block; font-size:12px; }
-
-    /* Center feed */
-    .center{ display:flex; flex-direction:column; gap:14px; }
-    .stories{ display:flex; gap:10px; overflow:auto; padding:10px; }
-    .story{ min-width:120px; height:180px; border-radius:12px; background:linear-gradient(180deg,#fff,#f6f8fb); display:flex; flex-direction:column; justify-content:flex-end; padding:10px; box-shadow: 0 6px 14px rgba(16,24,40,0.04); position:relative; }
-    .story .who{ font-weight:600; font-size:14px; }
-    .story .pic{ position:absolute; top:10px; left:10px; width:44px; height:44px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-
-    .people-suggest{ display:flex; gap:10px; overflow:auto; padding:10px; }
-    .suggest{ min-width:150px; background:var(--card); border-radius:12px; padding:10px; text-align:center; box-shadow: 0 6px 16px rgba(16,24,40,0.04); }
-    .post{ background:var(--card); border-radius:var(--rounded); padding:12px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
-    .post textarea{ width:100%; border-radius:10px; padding:12px; border:1px solid #e7e7e7; resize:vertical; min-height:70px; }
-
-    .post-actions{ display:flex; align-items:center; gap:8px; margin-top:8px; }
-    .btn{ padding:8px 12px; border-radius:8px; border:0; cursor:pointer; background:var(--blue); color:#fff; }
-
-    .feed-card{ background:var(--card); border-radius:12px; padding:12px; box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
-    .feed-header{ display:flex; gap:10px; align-items:center; margin-bottom:10px; }
-    .feed-media{ width:100%; border-radius:10px; max-height:600px; object-fit:cover; display:block; }
-
-    .actions{ display:flex; gap:14px; margin-top:8px; color:var(--muted); font-size:14px; }
-
-    /* Right column */
-    .right{ display:flex; flex-direction:column; gap:12px; }
-    .contacts{ display:flex; flex-direction:column; gap:8px; max-height:600px; overflow:auto; padding:10px; }
-    .contact{ display:flex; gap:10px; align-items:center; padding:6px 8px; border-radius:8px; text-decoration:none; color:inherit; }
-    .contact img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
-
-    /* Responsive */
-    @media (max-width:1050px){
-      .container{ grid-template-columns: 1fr; }
-      .right{ order:3 }
-      .left{ order:2 }
+    /* --- Top nav --- */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      background:#fff;padding:8px 16px;border-bottom:1px solid rgba(0,0,0,0.05);
+      display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)
     }
-    /* small helpers */
-    .muted{ color:var(--muted); font-size:13px; }
-    .small{ font-size:13px; }
-    .spacer{ flex:1; }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--blue)
+    }
+    .brand .logo{
+      width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#0b63d8,#69a7ff);
+      display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 2px 6px rgba(11,99,216,0.25)
+    }
+    .search{
+      flex:1;max-width:540px;display:flex;align-items:center;background:var(--bg);padding:8px 12px;border-radius:20px;border:1px solid rgba(0,0,0,0.06)
+    }
+    .search input{border:0;background:transparent;outline:none;width:100%}
+    .top-actions{display:flex;gap:8px;align-items:center;margin-left:auto}
+    .icon-btn{background:var(--glass);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,0.04);cursor:pointer}
+    .icon-btn .dot{width:8px;height:8px;border-radius:50%;background:crimson}
+
+    /* --- Layout --- */
+    .container{max-width:1200px;margin:16px auto;display:flex;gap:16px;padding:0 12px}
+    .col{background:transparent}
+    .left{width:250px}
+    .center{flex:1;max-width:640px}
+    .right{width:300px}
+
+    /* --- Cards & lists --- */
+    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:var(--shadow);margin-bottom:16px;border:1px solid rgba(0,0,0,0.03)}
+    .nav-link{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+    .nav-link:hover{background:rgba(0,0,0,0.03);color:var(--text)}
+
+    /* --- Profile avatar --- */
+    .avatar{
+      width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+      background:linear-gradient(45deg,#ff8a00,#ff3d81);flex-shrink:0
+    }
+
+    /* --- Stories strip --- */
+    .stories{display:flex;gap:10px;overflow:auto;padding:6px}
+    .story{
+      min-width:110px;height:180px;border-radius:12px;position:relative;overflow:hidden;flex-shrink:0;cursor:pointer;
+      background:linear-gradient(180deg, #fff,#f8f9fb);border:1px solid rgba(0,0,0,0.04)
+    }
+    .story .cover{height:100%;display:flex;align-items:flex-end;padding:8px;color:#fff;font-weight:700; font-size:14px}
+    .story .cover::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent, rgba(0,0,0,0.35))}
+
+    /* --- People you may know --- */
+    .suggest-list{display:flex;gap:8px;overflow:auto;padding:6px}
+    .suggest {width:160px;border-radius:10px;padding:8px;background:linear-gradient(180deg,#fff,#fbfbfc);border:1px solid rgba(0,0,0,0.03)}
+    .suggest .s-avatar{width:64px;height:64px;border-radius:8px;margin-bottom:8px;background:linear-gradient(45deg,#6a11cb,#2575fc);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+
+    /* --- Post --- */
+    .post-top{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+    .post-actions{display:flex;gap:6px;border-top:1px solid rgba(0,0,0,0.06);padding-top:8px;margin-top:8px}
+    .btn{flex:1;padding:8px;border-radius:8px;text-align:center;cursor:pointer;background:transparent;border:0;color:var(--muted);display:inline-block}
+    .btn:hover{background:rgba(0,0,0,0.03)}
+
+    .post-image{border-radius:10px;overflow:hidden;margin-top:8px;border:1px solid rgba(0,0,0,0.04)}
+
+    /* --- Contacts --- */
+    .contact{display:flex;gap:8px;align-items:center;padding:6px;border-radius:8px;cursor:pointer}
+    .contact:hover{background:rgba(0,0,0,0.03)}
+
+    /* --- responsive --- */
+    @media (max-width:980px){
+      .container{padding:0 10px}
+      .left{display:none}
+      .right{display:none}
+      .center{max-width:100%}
+      .topbar{padding:8px}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Top bar -->
-    <div class="topbar">
-      <div class="logo">
-        <div class="mark">S</div>
-        <div>
-          <div style="font-size:14px;">STRINGS</div>
-          <div class="muted" style="font-size:12px;">Social • Connect</div>
-        </div>
-      </div>
 
-      <div class="search" style="max-width:620px;">
-        <input id="search" placeholder="Search STRINGS" aria-label="Search" />
-      </div>
-
-      <div class="top-icons">
-        <button title="Home" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">🏠</button>
-        <button title="Watch" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">▶️</button>
-        <button title="Marketplace" style="background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer;">🛒</button>
-        <div style="width:8px;"></div>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f6a5ff,#ff6e8a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">P</div>
-        </div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand" aria-hidden>
+      <div class="logo">S</div>
+      <div>
+        <div style="font-size:13px">STRINGS</div>
+        <div style="font-size:11px;color:var(--muted);font-weight:600">FROM ROYAL ENTERPRISE</div>
       </div>
     </div>
 
-    <!-- Left column -->
-    <div class="left">
-      <div class="card">
-        <div class="profile">
-          <div class="avatar">P</div>
+    <div class="search" role="search" aria-label="Search">
+      <svg width="16" height="16" viewBox="0 0 24 24" style="opacity:.6"><path fill="currentColor" d="M21.53 20.47l-3.82-3.82A7.5 7.5 0 1 0 18 18l3.82 3.82zM5.5 11A5.5 5.5 0 1 1 11 16.5 5.51 5.51 0 0 1 5.5 11z"/></svg>
+      <input placeholder="What's on your mind, Pawan?" />
+    </div>
+
+    <div class="top-actions" role="navigation" aria-label="Top actions">
+      <div class="icon-btn" title="Home">Home</div>
+      <div class="icon-btn" title="Create">Create</div>
+      <div class="icon-btn" title="Notifications">
+        <span style="font-size:13px">🔔</span>
+        <div class="dot" title="new"></div>
+      </div>
+      <div class="icon-btn" title="Profile" style="padding:6px 8px">
+        <div class="avatar" style="width:36px;height:36px;font-size:13px">P</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="container">
+
+    <!-- LEFT -->
+    <div class="col left">
+      <div class="card" style="padding:10px">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+          <div class="avatar" style="width:56px;height:56px;font-size:18px">P</div>
           <div>
-            <div style="font-weight:700;">Pawan Tiwari</div>
-            <div class="muted">View profile</div>
+            <div style="font-weight:700">Pawan Tiwari</div>
+            <div style="font-size:13px;color:var(--muted)">View your profile</div>
           </div>
         </div>
-        <div class="menu">
-          <a href="#"><div>📰</div><div><strong>Feed</strong><small class="muted">Latest posts</small></div></a>
-          <a href="#"><div>📸</div><div><strong>Stories</strong><small class="muted">Share a moment</small></div></a>
-          <a href="#"><div>👥</div><div><strong>Friends</strong><small class="muted">Find people</small></div></a>
-          <a href="#"><div>📅</div><div><strong>Events</strong><small class="muted">Nearby</small></div></a>
-        </div>
+        <div class="nav-link"><span>🏠</span> News Feed</div>
+        <div class="nav-link"><span>👥</span> Friends</div>
+        <div class="nav-link"><span>💬</span> Messenger</div>
+        <div class="nav-link"><span>🧾</span> Marketplace</div>
+        <div class="nav-link"><span>⚙️</span> Settings</div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:8px">Shortcuts</div>
+        <div class="nav-link">Groups</div>
+        <div class="nav-link">Pages</div>
+        <div class="nav-link">Events</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;color:var(--muted)">Sponsored</div>
+        <div style="margin-top:8px;font-weight:700">Ad example</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:6px">Promoted • strings.co</div>
       </div>
     </div>
 
-    <!-- Center feed -->
-    <main class="center">
-      <!-- stories -->
-      <div class="stories card" id="stories">
-        <div class="story">
-          <div class="pic">P</div>
-          <div class="who">Create story</div>
+    <!-- CENTER -->
+    <div class="col center">
+
+      <!-- Create post -->
+      <div class="card" style="display:flex;gap:10px;align-items:center">
+        <div class="avatar" style="width:48px;height:48px">P</div>
+        <input placeholder="What's on your mind, Pawan?" style="flex:1;padding:10px;border-radius:24px;border:1px solid rgba(0,0,0,0.06);outline:none" />
+      </div>
+
+      <!-- Stories -->
+      <div class="card" style="overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:700">Stories</div>
+          <div style="font-size:13px;color:var(--muted)">See all</div>
         </div>
-        <div class="story" style="background:linear-gradient(180deg,#fde8d6,#fff);">
-          <div class="pic">N</div>
-          <div class="who">Neeraj Mishra</div>
-        </div>
-        <div class="story" style="background:linear-gradient(180deg,#dff3ff,#fff);">
-          <div class="pic">A</div>
-          <div class="who">Aman Tiwari</div>
-        </div>
-        <div class="story" style="background:linear-gradient(180deg,#f7eafc,#fff);">
-          <div class="pic">M</div>
-          <div class="who">Mukesh Mishra</div>
-        </div>
-        <div class="story" style="background:linear-gradient(180deg,#e8ffe8,#fff);">
-          <div class="pic">J</div>
-          <div class="who">Janki Chaudhary</div>
+        <div class="stories" id="stories">
+          <div class="story" style="background:linear-gradient(180deg,#4facfe,#00f2fe)">
+            <div class="cover" style="position:relative;z-index:2;padding:12px">Create story</div>
+          </div>
+          <div class="story" style="background:linear-gradient(180deg,#f6d365,#fda085)">
+            <div class="cover" style="position:relative;z-index:2;padding:12px">Neeraj Mishra</div>
+          </div>
+          <div class="story" style="background:linear-gradient(180deg,#a1c4fd,#c2e9fb)">
+            <div class="cover" style="position:relative;z-index:2;padding:12px">Aman Tiwari</div>
+          </div>
+          <div class="story" style="background:linear-gradient(180deg,#fccb90,#d57eeb)">
+            <div class="cover" style="position:relative;z-index:2;padding:12px">Mukesh Mishra</div>
+          </div>
+          <div class="story" style="background:linear-gradient(180deg,#f093fb,#f5576c)">
+            <div class="cover" style="position:relative;z-index:2;padding:12px">Janki Raman</div>
+          </div>
         </div>
       </div>
 
       <!-- People you may know -->
-      <div class="card people-suggest" id="people">
-        <div class="suggest">
-          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#4da3ff,#0056d6); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">PU</div>
-          <div style="margin-top:8px; font-weight:700;">Pawan Upadhyay</div>
-          <div class="muted small">22 mutual friends</div>
-          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
-        </div>
-
-        <div class="suggest">
-          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#ffd27a,#ff8a00); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">AM</div>
-          <div style="margin-top:8px; font-weight:700;">Ayush Maurya</div>
-          <div class="muted small">6 mutual friends</div>
-          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
-        </div>
-
-        <div class="suggest">
-          <div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#b4ffd6,#39b385); margin:0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:20px;">AR</div>
-          <div style="margin-top:8px; font-weight:700;">Ayush Redkar</div>
-          <div class="muted small">3 mutual friends</div>
-          <button class="btn" style="margin-top:8px;" onclick="addFriend(this)">Add friend</button>
-        </div>
-      </div>
-
-      <!-- create post -->
-      <div class="post card">
-        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
-          <div class="avatar" style="width:44px;height:44px">P</div>
-          <div style="flex:1;">
-            <div style="font-weight:700;">What's on your mind, Pawan?</div>
-            <div class="muted small">Share a memory, thought or update</div>
-          </div>
-        </div>
-        <textarea placeholder="Write something to your friends..." id="postText"></textarea>
-        <div class="post-actions">
-          <button class="btn" onclick="createPost()">Post</button>
-          <div class="spacer"></div>
-          <button style="background:#f0f2f5;border-radius:8px;border:0;padding:8px 10px;cursor:pointer;">📎 Photo</button>
-          <button style="background:#f0f2f5;border-radius:8px;border:0;padding:8px 10px;cursor:pointer;">😊 Feeling</button>
-        </div>
-      </div>
-
-      <!-- feed post -->
-      <div class="feed-card" id="feed">
-        <div class="feed-header">
-          <div class="avatar" style="width:52px;height:52px">J</div>
-          <div>
-            <div style="font-weight:700;">Jayesh Dubey <span class="muted small">• 30 Nov</span></div>
-            <div class="muted small">Updated profile picture</div>
-          </div>
-        </div>
-        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=60" alt="post" class="feed-media" />
-        <div class="actions">
-          <div id="likeBtn" style="cursor:pointer;" onclick="toggleLike(this)">👍 Like</div>
-          <div style="cursor:pointer">💬 Comment</div>
-          <div style="cursor:pointer">↗️ Share</div>
-        </div>
-      </div>
-
-      <!-- sponsored / ad -->
-      <div class="card" style="padding:14px;">
-        <div style="font-weight:700; margin-bottom:6px;">Sponsored</div>
-        <div style="background:#f8f9fb;border-radius:10px;padding:10px;">
-          <div style="font-size:18px;font-weight:700;">Your best content deserves more views.</div>
-          <div class="muted small" style="margin-top:6px;">Get help promoting your videos and reach new viewers.</div>
-          <button style="margin-top:10px;" class="btn">Sign up</button>
-        </div>
-      </div>
-
-    </main>
-
-    <!-- Right column -->
-    <aside class="right">
       <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="font-weight:700;">Contacts</div>
-          <div class="muted">•</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:700">People you may know</div>
+          <div style="font-size:13px;color:var(--muted)">See all</div>
         </div>
-        <div class="contacts" id="contacts">
-          <a class="contact" href="#"><img src="https://picsum.photos/seed/a/200" alt="" /><div>Meta AI <div class="muted small">Active</div></div></a>
-          <a class="contact" href="#"><img src="https://picsum.photos/seed/b/200" alt="" /><div>Jatin Dave<div class="muted small">Active</div></div></a>
-          <a class="contact" href="#"><img src="https://picsum.photos/seed/c/200" alt="" /><div>Shailesh<div class="muted small">Active</div></div></a>
-          <a class="contact" href="#"><img src="https://picsum.photos/seed/d/200" alt="" /><div>Manas Bhakat<div class="muted small">Active</div></div></a>
-          <a class="contact" href="#"><img src="https://picsum.photos/seed/e/200" alt="" /><div>Aman Tiwari<div class="muted small">Active</div></div></a>
+        <div class="suggest-list">
+          <div class="suggest">
+            <div class="s-avatar">PU</div>
+            <div style="font-weight:700;margin-bottom:6px">Pawan Upadhyay</div>
+            <button style="padding:6px;border-radius:8px;border:0;background:var(--blue);color:#fff;width:100%">Add friend</button>
+          </div>
+          <div class="suggest">
+            <div class="s-avatar">AM</div>
+            <div style="font-weight:700;margin-bottom:6px">Ayush Maurya</div>
+            <button style="padding:6px;border-radius:8px;border:0;background:#2ecc71;color:#fff;width:100%">Add friend</button>
+          </div>
+          <div class="suggest">
+            <div class="s-avatar">AR</div>
+            <div style="font-weight:700;margin-bottom:6px">Ayush Redkar</div>
+            <button style="padding:6px;border-radius:8px;border:0;background:#6c5ce7;color:#fff;width:100%">Add friend</button>
+          </div>
         </div>
       </div>
 
-      <div class="card" style="padding:12px;">
-        <div style="font-weight:700; margin-bottom:8px;">Group chats</div>
-        <div class="muted small">Create or join groups to chat with friends.</div>
-        <button class="btn" style="margin-top:10px;">Create group chat</button>
+      <!-- Post example -->
+      <div class="card" id="post-1">
+        <div class="post-top">
+          <div class="avatar" style="width:48px;height:48px">J</div>
+          <div>
+            <div style="font-weight:700">Jayesh Dubey <span style="font-weight:400;color:var(--muted);font-size:13px"> • 30 November at 15:38</span></div>
+            <div style="font-size:13px;color:var(--muted)">Updated his profile picture</div>
+          </div>
+        </div>
+
+        <div class="post-text" style="margin-top:8px">
+          <p>Had a great day at the new office lounge — loving the vibe!</p>
+        </div>
+
+        <div class="post-image">
+          <!-- Placeholder image using svg data URL -->
+          <img alt="office-lounge" src='data:image/svg+xml;utf8,
+            <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600">
+              <defs>
+                <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="%23fdfbfb"/>
+                  <stop offset="1" stop-color="%23ebedee"/>
+                </linearGradient>
+              </defs>
+              <rect width="100%" height="100%" fill="url(%23g)"/>
+              <g>
+                <rect x="60" y="60" width="1080" height="420" rx="16" fill="%23fff" stroke="%23e6e7e8" />
+                <circle cx="180" cy="200" r="60" fill="%23cbe8ff" />
+                <rect x="280" y="140" width="800" height="260" rx="12" fill="%23f8f8f9"/>
+              </g>
+            </svg>' />
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;color:var(--muted);font-size:13px">
+          <div>👍 13</div>
+          <div>2 comments • Share</div>
+        </div>
+
+        <div class="post-actions">
+          <button class="btn" data-action="like">Like</button>
+          <button class="btn" data-action="comment">Comment</button>
+          <button class="btn" data-action="share">Share</button>
+        </div>
       </div>
-    </aside>
+
+      <!-- Sponsored ad -->
+      <div class="card" style="text-align:center;padding:18px">
+        <div style="font-weight:700">Google Ads</div>
+        <div style="font-size:13px;color:var(--muted);margin:8px 0">Use Google's AI to simplify ad creation & management</div>
+        <div style="border-radius:8px;padding:16px;border:1px dashed rgba(0,0,0,0.06);background:linear-gradient(180deg,#fff,#fafafa)">Ad preview area</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col right">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-weight:700">Sponsored</div>
+          <div style="font-size:13px;color:var(--muted)">•</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted)">Discover products & more</div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:8px">Contacts</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input id="contactSearch" placeholder="Search contacts" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)" />
+        </div>
+
+        <div id="contactsList" style="display:flex;flex-direction:column;gap:6px;max-height:380px;overflow:auto">
+          <!-- contacts generated by JS -->
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:700">Group chats</div>
+        <div style="margin-top:8px;color:var(--muted)">Create group chat</div>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // Simple interactions
-    function addFriend(btn){
-      btn.textContent = 'Requested';
-      btn.disabled = true;
-      btn.style.background = '#4CAF50';
-    }
+    // --- Simple JS interactions ---
 
-    function toggleLike(el){
-      if(el.dataset.liked === '1'){
-        el.innerHTML = '👍 Like';
-        el.dataset.liked = '0';
-      } else {
-        el.innerHTML = '💙 Liked';
-        el.dataset.liked = '1';
+    // Create sample contacts
+    const contacts = [
+      "Meta AI","Jatin Dave","Shailesh Tiwari Tiwari","Kamlesh Panday","Sanny Singh",
+      "Manas Bhakat","Raman Jha","Janki Raman Chaudhary","Pravin Tiwari","Rajendra Kadam",
+      "Priyanka Thakur","Rina Patel","Aman Tiwari","Sanket Sagvekar","Rathore Anand Sa",
+      "Sivil Dubey","Siddharth Chotliya","Sagar Kanojia"
+    ];
+
+    const contactsList = document.getElementById('contactsList');
+    function renderContacts(filter=''){
+      contactsList.innerHTML = '';
+      contacts.filter(c => c.toLowerCase().includes(filter.toLowerCase())).forEach(name=>{
+        const el = document.createElement('div');
+        el.className = 'contact';
+        el.innerHTML = `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(45deg,#ff7e5f,#feb47b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px">${name.split(' ').map(s=>s[0]).slice(0,2).join('')}</div>
+                        <div style="flex:1"><div style="font-weight:700">${name}</div><div style="font-size:12px;color:var(--muted)">online</div></div>
+                        <div style="font-size:14px;opacity:.6">💬</div>`;
+        contactsList.appendChild(el);
+      })
+    }
+    renderContacts();
+
+    document.getElementById('contactSearch').addEventListener('input', (e) => {
+      renderContacts(e.target.value);
+    });
+
+    // Simple like/comment/share behavior
+    document.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.addEventListener('click', () => {
+        const action = btn.getAttribute('data-action');
+        btn.style.color = 'var(--blue)';
+        btn.style.fontWeight = '700';
+        // small animation
+        btn.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:180,easing:'ease-out'});
+        if(action==='like') alert('You liked the post');
+      });
+    });
+
+    // make stories scroll a bit on click (simulate carousel)
+    const stories = document.getElementById('stories');
+    let storyIndex = 0;
+    stories.addEventListener('click', () => {
+      storyIndex = (storyIndex + 1) % stories.children.length;
+      const child = stories.children[storyIndex];
+      child.scrollIntoView({behavior:'smooth',inline:'center'});
+    });
+
+    // keyboard accessibility: press 's' to focus search input
+    document.addEventListener('keydown', (e) => {
+      if(e.key.toLowerCase() === 's' && document.activeElement.tagName !== 'INPUT') {
+        document.querySelector('.search input').focus();
       }
-    }
-
-    function createPost(){
-      const text = document.getElementById('postText').value.trim();
-      if(!text){
-        alert('Write something before posting.');
-        return;
-      }
-      const feed = document.getElementById('feed');
-      const post = document.createElement('div');
-      post.className = 'feed-card';
-      post.innerHTML = `
-        <div class="feed-header">
-          <div class="avatar" style="width:52px;height:52px">P</div>
-          <div>
-            <div style="font-weight:700;">You <span class="muted small">• Just now</span></div>
-          </div>
-        </div>
-        <div style="margin-top:8px;">${escapeHtml(text)}</div>
-        <div class="actions">
-          <div style="cursor:pointer" onclick="toggleLike(this)">👍 Like</div>
-          <div style="cursor:pointer">💬 Comment</div>
-          <div style="cursor:pointer">↗️ Share</div>
-        </div>
-      `;
-      // insert new post at top of feed area
-      const main = document.querySelector('.center');
-      main.insertBefore(post, main.querySelector('.post').nextSibling);
-      document.getElementById('postText').value = '';
-    }
-
-    // small helper to avoid HTML injection
-    function escapeHtml(str){
-      return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-    }
-
-    // make horizontal strips scroll smoothly with mouse wheel
-    document.querySelectorAll('.stories, .people-suggest').forEach(el=>{
-      el.addEventListener('wheel', e=>{
-        if (e.deltaY === 0) return;
-        e.preventDefault();
-        el.scrollLeft += e.deltaY;
-      }, { passive:false });
     });
   </script>
+
 </body>
 </html>
